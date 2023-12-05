@@ -9,6 +9,7 @@ import assertk.assertions.isTrue
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.K9.NotificationQuickDelete
+import com.fsck.k9.K9.NotificationQuickAction
 import com.fsck.k9.controller.MessageReference
 import org.junit.Test
 
@@ -110,6 +111,24 @@ class SingleMessageNotificationDataCreatorTest {
     }
 
     @Test
+    fun `always show archive action`() {
+        setDeleteAction(NotificationQuickDelete.ALWAYS)
+        setQuickActionButtonType(NotificationQuickAction.ARCHIVE)
+        val content = createNotificationContent()
+
+        val result = notificationDataCreator.createSingleNotificationData(
+            account = account,
+            notificationId = 0,
+            content = content,
+            timestamp = 0,
+            addLockScreenNotification = false,
+        )
+
+        assertThat(result.actions).contains(NotificationAction.Archive)
+        assertThat(result.actions).doesNotContain(NotificationAction.Delete)
+    }
+
+    @Test
     fun `show delete action for single notification without confirmation`() {
         setDeleteAction(NotificationQuickDelete.FOR_SINGLE_MSG)
         setConfirmDeleteFromNotification(false)
@@ -146,6 +165,24 @@ class SingleMessageNotificationDataCreatorTest {
     }
 
     @Test
+    fun `show archive action for single notification`() {
+        setDeleteAction(NotificationQuickDelete.FOR_SINGLE_MSG)
+        setQuickActionButtonType(NotificationQuickAction.ARCHIVE)
+        val content = createNotificationContent()
+
+        val result = notificationDataCreator.createSingleNotificationData(
+            account = account,
+            notificationId = 0,
+            content = content,
+            timestamp = 0,
+            addLockScreenNotification = false,
+        )
+
+        assertThat(result.actions).contains(NotificationAction.Archive)
+        assertThat(result.actions).doesNotContain(NotificationAction.Delete)
+    }
+
+    @Test
     fun `never show delete action`() {
         setDeleteAction(NotificationQuickDelete.NEVER)
         val content = createNotificationContent()
@@ -160,6 +197,23 @@ class SingleMessageNotificationDataCreatorTest {
 
         assertThat(result.actions).doesNotContain(NotificationAction.Delete)
         assertThat(result.wearActions).doesNotContain(WearNotificationAction.Delete)
+    }
+
+    @Test
+    fun `never show archive action`() {
+        setDeleteAction(NotificationQuickDelete.NEVER)
+        setQuickActionButtonType(NotificationQuickAction.ARCHIVE)
+        val content = createNotificationContent()
+
+        val result = notificationDataCreator.createSingleNotificationData(
+            account = account,
+            notificationId = 0,
+            content = content,
+            timestamp = 0,
+            addLockScreenNotification = false,
+        )
+
+        assertThat(result.actions).doesNotContain(NotificationAction.Archive)
     }
 
     @Test
@@ -247,6 +301,10 @@ class SingleMessageNotificationDataCreatorTest {
 
     private fun setDeleteAction(mode: NotificationQuickDelete) {
         K9.notificationQuickDeleteBehaviour = mode
+    }
+
+    private fun setQuickActionButtonType(action: NotificationQuickAction) {
+        K9.notificationQuickAction = action
     }
 
     private fun setConfirmDeleteFromNotification(confirm: Boolean) {

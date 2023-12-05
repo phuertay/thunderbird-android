@@ -46,8 +46,11 @@ internal class SingleMessageNotificationDataCreator {
             add(NotificationAction.Reply)
             add(NotificationAction.MarkAsRead)
 
-            if (isDeleteActionEnabled()) {
-                add(NotificationAction.Delete)
+            if (isActionButtonEnabled()) {
+                when (K9.notificationQuickAction) {
+                    K9.NotificationQuickAction.DELETE -> add(NotificationAction.Delete)
+                    K9.NotificationQuickAction.ARCHIVE -> add(NotificationAction.Archive)
+                }
             }
         }
     }
@@ -71,13 +74,13 @@ internal class SingleMessageNotificationDataCreator {
         }
     }
 
-    private fun isDeleteActionEnabled(): Boolean {
+    private fun isActionButtonEnabled(): Boolean {
         return K9.notificationQuickDeleteBehaviour != K9.NotificationQuickDelete.NEVER
     }
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.
     private fun isDeleteActionAvailableForWear(): Boolean {
-        return isDeleteActionEnabled() && !K9.isConfirmDeleteFromNotification
+        return isActionButtonEnabled() && !K9.isConfirmDeleteFromNotification
     }
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.

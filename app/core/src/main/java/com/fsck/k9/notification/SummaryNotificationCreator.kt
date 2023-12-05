@@ -111,6 +111,7 @@ internal class SummaryNotificationCreator(
             when (action) {
                 SummaryNotificationAction.MarkAsRead -> addMarkAllAsReadAction(account, notificationData)
                 SummaryNotificationAction.Delete -> addDeleteAllAction(account, notificationData)
+                SummaryNotificationAction.Archive -> addArchiveAllAction(account, notificationData)
             }
         }
     }
@@ -135,6 +136,18 @@ internal class SummaryNotificationCreator(
         val title = resourceProvider.actionDelete()
         val messageReferences = notificationData.messageReferences
         val action = actionCreator.createDeleteAllPendingIntent(account, messageReferences)
+
+        addAction(icon, title, action)
+    }
+
+    private fun NotificationBuilder.addArchiveAllAction(
+        account: Account,
+        notificationData: SummaryInboxNotificationData,
+    ) {
+        val icon = resourceProvider.iconArchive
+        val title = resourceProvider.actionArchive()
+        val messageReferences = notificationData.messageReferences
+        val action = actionCreator.createArchiveAllPendingIntent(account, messageReferences)
 
         addAction(icon, title, action)
     }
