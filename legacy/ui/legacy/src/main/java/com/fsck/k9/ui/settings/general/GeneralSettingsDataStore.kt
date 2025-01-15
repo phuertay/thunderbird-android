@@ -110,6 +110,7 @@ class GeneralSettingsDataStore(
             "messageViewTheme" -> subThemeToString(generalSettingsManager.getSettings().messageViewTheme)
             "messagelist_preview_lines" -> K9.messageListPreviewLines.toString()
             "splitview_mode" -> K9.splitViewMode.name
+            "notification_quick_action" -> K9.notificationQuickAction.name
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
             "background_ops" -> K9.backgroundOps.name
@@ -146,6 +147,9 @@ class GeneralSettingsDataStore(
             "splitview_mode" -> K9.splitViewMode = K9.SplitViewMode.valueOf(value)
             "notification_quick_delete" -> {
                 K9.notificationQuickDeleteBehaviour = K9.NotificationQuickDelete.valueOf(value)
+            }
+            "notification_quick_action" -> {
+                K9.notificationQuickAction = K9.NotificationQuickAction.valueOf(value)
             }
             "lock_screen_notification_visibility" -> {
                 K9.lockScreenNotificationVisibility = K9.LockScreenNotificationVisibility.valueOf(value)

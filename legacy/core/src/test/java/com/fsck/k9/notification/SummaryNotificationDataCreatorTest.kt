@@ -174,6 +174,22 @@ class SummaryNotificationDataCreatorTest {
     }
 
     @Test
+    fun `always show archive action`() {
+        setDeleteAction(K9.NotificationQuickDelete.ALWAYS)
+        setQuickActionButtonType(K9.NotificationQuickAction.ARCHIVE)
+        val notificationData = createNotificationDataWithMultipleMessages()
+
+        val result = notificationDataCreator.createSummaryNotificationData(
+            notificationData,
+            silent = true,
+        )
+
+        val summaryNotificationData = result as SummaryInboxNotificationData
+        assertThat(summaryNotificationData.actions).contains(SummaryNotificationAction.Archive)
+        assertThat(summaryNotificationData.actions).doesNotContain(SummaryNotificationAction.Delete)
+    }
+
+    @Test
     fun `show delete action for single notification without confirmation`() {
         setDeleteAction(K9.NotificationQuickDelete.FOR_SINGLE_MSG)
         setConfirmDeleteFromNotification(false)
@@ -190,6 +206,22 @@ class SummaryNotificationDataCreatorTest {
     }
 
     @Test
+    fun `show archive action for single notification`() {
+        setDeleteAction(K9.NotificationQuickDelete.FOR_SINGLE_MSG)
+        setQuickActionButtonType(K9.NotificationQuickAction.ARCHIVE)
+        val notificationData = createNotificationDataWithMultipleMessages()
+
+        val result = notificationDataCreator.createSummaryNotificationData(
+            notificationData,
+            silent = true,
+        )
+
+        val summaryNotificationData = result as SummaryInboxNotificationData
+        assertThat(summaryNotificationData.actions).doesNotContain(SummaryNotificationAction.Archive)
+        assertThat(summaryNotificationData.actions).doesNotContain(SummaryNotificationAction.Delete)
+    }
+
+    @Test
     fun `never show delete action`() {
         setDeleteAction(K9.NotificationQuickDelete.NEVER)
         val notificationData = createNotificationDataWithMultipleMessages()
@@ -202,6 +234,22 @@ class SummaryNotificationDataCreatorTest {
         val summaryNotificationData = result as SummaryInboxNotificationData
         assertThat(summaryNotificationData.actions).doesNotContain(SummaryNotificationAction.Delete)
         assertThat(summaryNotificationData.wearActions).doesNotContain(SummaryWearNotificationAction.Delete)
+    }
+
+    @Test
+    fun `never show archive action`() {
+        setDeleteAction(K9.NotificationQuickDelete.NEVER)
+        setQuickActionButtonType(K9.NotificationQuickAction.ARCHIVE)
+        val notificationData = createNotificationDataWithMultipleMessages()
+
+        val result = notificationDataCreator.createSummaryNotificationData(
+            notificationData,
+            silent = true,
+        )
+
+        val summaryNotificationData = result as SummaryInboxNotificationData
+        assertThat(summaryNotificationData.actions).doesNotContain(SummaryNotificationAction.Archive)
+        assertThat(summaryNotificationData.actions).doesNotContain(SummaryNotificationAction.Delete)
     }
 
     @Test
@@ -242,6 +290,10 @@ class SummaryNotificationDataCreatorTest {
 
     private fun setDeleteAction(mode: K9.NotificationQuickDelete) {
         K9.notificationQuickDeleteBehaviour = mode
+    }
+
+    private fun setQuickActionButtonType(action: K9.NotificationQuickAction) {
+        K9.notificationQuickAction = action
     }
 
     private fun setConfirmDeleteFromNotification(confirm: Boolean) {

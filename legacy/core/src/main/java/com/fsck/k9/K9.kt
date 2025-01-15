@@ -154,6 +154,9 @@ object K9 : KoinComponent {
     var isConfirmMarkAllRead = true
 
     @JvmStatic
+    var notificationQuickAction = NotificationQuickAction.DELETE
+
+    @JvmStatic
     var notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
 
     @JvmStatic
@@ -367,6 +370,7 @@ object K9 : KoinComponent {
         val sortAscendingSetting = storage.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING)
         sortAscending[sortType] = sortAscendingSetting
 
+        notificationQuickAction = storage.getEnum("notificationQuickAction", NotificationQuickAction.DELETE)
         notificationQuickDeleteBehaviour = storage.getEnum("notificationQuickDelete", NotificationQuickDelete.ALWAYS)
 
         lockScreenNotificationVisibility = storage.getEnum(
@@ -450,6 +454,7 @@ object K9 : KoinComponent {
         editor.putEnum("sortTypeEnum", sortType)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)
 
+        editor.putString("notificationQuickAction", notificationQuickAction.toString())
         editor.putString("notificationQuickDelete", notificationQuickDeleteBehaviour.toString())
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
 
@@ -549,7 +554,15 @@ object K9 : KoinComponent {
     }
 
     /**
-     * Controls behaviour of delete button in notifications.
+     * Controls which action button should appear in notifications.
+     */
+    enum class NotificationQuickAction {
+        DELETE,
+        ARCHIVE,
+    }
+
+    /**
+     * Controls behaviour of delete and archive button in notifications.
      */
     enum class NotificationQuickDelete {
         ALWAYS,
