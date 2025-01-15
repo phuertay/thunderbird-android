@@ -65,6 +65,7 @@ internal enum class NotificationAction {
     Reply,
     MarkAsRead,
     Delete,
+    Archive
 }
 
 internal enum class WearNotificationAction {
@@ -78,6 +79,7 @@ internal enum class WearNotificationAction {
 internal enum class SummaryNotificationAction {
     MarkAsRead,
     Delete,
+    Archive
 }
 
 internal enum class SummaryWearNotificationAction {

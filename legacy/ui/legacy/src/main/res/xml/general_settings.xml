@@ -457,6 +457,14 @@
             />
 
         <ListPreference
+            android:dialogTitle="@string/global_settings_notification_quick_action_title"
+            android:entries="@array/notification_quick_action_entries"
+            android:entryValues="@array/notification_quick_action_values"
+            android:key="notification_quick_action"
+            app:useSimpleSummaryProvider="true"
+            android:title="@string/global_settings_notification_quick_action_title" />
+
+        <ListPreference
             android:dialogTitle="@string/global_settings_notification_quick_delete_title"
             android:entries="@array/notification_quick_delete_entries"
             android:entryValues="@array/notification_quick_delete_values"

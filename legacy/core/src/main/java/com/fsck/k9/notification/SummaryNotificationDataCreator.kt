@@ -47,8 +47,11 @@ internal class SummaryNotificationDataCreator(
         return buildList {
             add(SummaryNotificationAction.MarkAsRead)
 
-            if (isDeleteActionEnabled()) {
-                add(SummaryNotificationAction.Delete)
+            if (isActionButtonEnabled()) {
+                when (K9.notificationQuickAction) {
+                    K9.NotificationQuickAction.DELETE -> add(SummaryNotificationAction.Delete)
+                    K9.NotificationQuickAction.ARCHIVE -> add(SummaryNotificationAction.Archive)
+                }
             }
         }
     }
@@ -67,13 +70,13 @@ internal class SummaryNotificationDataCreator(
         }
     }
 
-    private fun isDeleteActionEnabled(): Boolean {
+    private fun isActionButtonEnabled(): Boolean {
         return K9.notificationQuickDeleteBehaviour == K9.NotificationQuickDelete.ALWAYS
     }
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.
     private fun isDeleteActionAvailableForWear(): Boolean {
-        return isDeleteActionEnabled() && !K9.isConfirmDeleteFromNotification
+        return isActionButtonEnabled() && !K9.isConfirmDeleteFromNotification
     }
 
     private val NotificationData.latestTimestamp: Long

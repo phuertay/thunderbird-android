@@ -117,6 +117,11 @@
         <item>6</item>
     </string-array>
 
+    <string-array name="notification_quick_action_entries">
+        <item name="1">@string/delete_action</item>
+        <item name="2">@string/archive_action</item>
+    </string-array>
+
     <string-array name="notification_quick_delete_entries">
         <item name="1">@string/global_settings_notification_quick_delete_never</item>
         <item name="2">@string/global_settings_notification_quick_delete_when_single_msg</item>
